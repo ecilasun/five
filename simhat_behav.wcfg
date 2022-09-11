@@ -7,20 +7,18 @@
          <top_modules>
             <top_module name="axi_pkg" />
             <top_module name="glbl" />
-            <top_module name="ipif_pkg" />
-            <top_module name="lib_pkg" />
             <top_module name="simhat" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="10,714.334 ns"></ZoomStartTime>
-      <ZoomEndTime time="12,728.335 ns"></ZoomEndTime>
-      <Cursor1Time time="11,240.000 ns"></Cursor1Time>
+      <ZoomStartTime time="0.020000 us"></ZoomStartTime>
+      <ZoomEndTime time="101.020001 us"></ZoomEndTime>
+      <Cursor1Time time="12.170000 us"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="404"></NameColumnWidth>
-      <ValueColumnWidth column_width="118"></ValueColumnWidth>
+      <ValueColumnWidth column_width="112"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="3" />
    <wvobject fp_name="group13" type="group">
@@ -46,10 +44,8 @@
       <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/cpustate" type="array">
          <obj_property name="ElementShortName">cpustate[3:0]</obj_property>
          <obj_property name="ObjectShortName">cpustate[3:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/immed" type="array">
-         <obj_property name="ElementShortName">immed[31:0]</obj_property>
-         <obj_property name="ObjectShortName">immed[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/PC" type="array">
          <obj_property name="ElementShortName">PC[31:0]</obj_property>
@@ -67,17 +63,9 @@
          <obj_property name="CustomSignalColor">#FFFF00</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/ren" type="logic">
-         <obj_property name="ElementShortName">ren</obj_property>
-         <obj_property name="ObjectShortName">ren</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/ifetch" type="logic">
-         <obj_property name="ElementShortName">ifetch</obj_property>
-         <obj_property name="ObjectShortName">ifetch</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/wstrb" type="array">
-         <obj_property name="ElementShortName">wstrb[3:0]</obj_property>
-         <obj_property name="ObjectShortName">wstrb[3:0]</obj_property>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/immed" type="array">
+         <obj_property name="ElementShortName">immed[31:0]</obj_property>
+         <obj_property name="ObjectShortName">immed[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/dout" type="array">
          <obj_property name="ElementShortName">dout[31:0]</obj_property>
@@ -127,35 +115,12 @@
    <wvobject fp_name="group813" type="group">
       <obj_property name="label">HART1</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/cpustate" type="array">
          <obj_property name="ElementShortName">cpustate[3:0]</obj_property>
          <obj_property name="ObjectShortName">cpustate[3:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/immed" type="array">
-         <obj_property name="ElementShortName">immed[31:0]</obj_property>
-         <obj_property name="ObjectShortName">immed[31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/addr" type="array">
-         <obj_property name="ElementShortName">addr[31:0]</obj_property>
-         <obj_property name="ObjectShortName">addr[31:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/ren" type="logic">
-         <obj_property name="ElementShortName">ren</obj_property>
-         <obj_property name="ObjectShortName">ren</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/wstrb" type="array">
-         <obj_property name="ElementShortName">wstrb[3:0]</obj_property>
-         <obj_property name="ObjectShortName">wstrb[3:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/din" type="array">
-         <obj_property name="ElementShortName">din[31:0]</obj_property>
-         <obj_property name="ObjectShortName">din[31:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/dout" type="array">
-         <obj_property name="ElementShortName">dout[31:0]</obj_property>
-         <obj_property name="ObjectShortName">dout[31:0]</obj_property>
       </wvobject>
       <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/PC" type="array">
          <obj_property name="ElementShortName">PC[31:0]</obj_property>
@@ -163,9 +128,63 @@
          <obj_property name="CustomSignalColor">#00FFFF</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/addr" type="array">
+         <obj_property name="ElementShortName">addr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">addr[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/din" type="array">
+         <obj_property name="ElementShortName">din[31:0]</obj_property>
+         <obj_property name="ObjectShortName">din[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/immed" type="array">
+         <obj_property name="ElementShortName">immed[31:0]</obj_property>
+         <obj_property name="ObjectShortName">immed[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/dout" type="array">
+         <obj_property name="ElementShortName">dout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dout[31:0]</obj_property>
+      </wvobject>
       <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/rwaddress" type="array">
          <obj_property name="ElementShortName">rwaddress[31:0]</obj_property>
          <obj_property name="ObjectShortName">rwaddress[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="group69" type="group">
+         <obj_property name="label">intreg</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/rs1" type="array">
+            <obj_property name="ElementShortName">rs1[4:0]</obj_property>
+            <obj_property name="ObjectShortName">rs1[4:0]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/rs2" type="array">
+            <obj_property name="ElementShortName">rs2[4:0]</obj_property>
+            <obj_property name="ObjectShortName">rs2[4:0]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/rd" type="array">
+            <obj_property name="ElementShortName">rd[4:0]</obj_property>
+            <obj_property name="ObjectShortName">rd[4:0]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/wren" type="logic">
+            <obj_property name="ElementShortName">wren</obj_property>
+            <obj_property name="ObjectShortName">wren</obj_property>
+         </wvobject>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/din" type="array">
+            <obj_property name="ElementShortName">din[31:0]</obj_property>
+            <obj_property name="ObjectShortName">din[31:0]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/rval1" type="array">
+            <obj_property name="ElementShortName">rval1[31:0]</obj_property>
+            <obj_property name="ObjectShortName">rval1[31:0]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/rval2" type="array">
+            <obj_property name="ElementShortName">rval2[31:0]</obj_property>
+            <obj_property name="ObjectShortName">rval2[31:0]</obj_property>
+         </wvobject>
+         <wvobject fp_name="/simhat/tophatinst/rv32instanceTwo/integerregisterfileinst/registers" type="array">
+            <obj_property name="ElementShortName">registers[0:31][31:0]</obj_property>
+            <obj_property name="ObjectShortName">registers[0:31][31:0]</obj_property>
+         </wvobject>
       </wvobject>
    </wvobject>
 </wave_config>

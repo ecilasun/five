@@ -159,7 +159,7 @@ integerregisterfile integerregisterfileinst(
 	.rval1(rval1),
 	.rval2(rval2) );
 
-csrregisterfile #(.HARTID(0)) csrregisterfileinst (
+csrregisterfile #(.HARTID(HARTID)) csrregisterfileinst (
 	.clock(aclk),
 	.wallclocktime(wc2),
 	.cpuclocktime(cc2),
