@@ -6,7 +6,6 @@ module csrregisterfile #(
 	parameter int HARTID = 32'h00000000
 ) (
 	input wire clock,
-	input wire [63:0] wallclocktime,
 	input wire [63:0] cpuclocktime,
 	input wire [63:0] retired,
 	output logic [63:0] tcmp = 64'hFFFFFFFFFFFFFFFF,
@@ -76,10 +75,10 @@ always_comb begin
 		`CSR_MIP:		dout = mip;
 		`CSR_MTVEC:		dout = mtvec;
 		`CSR_MHARTID:	dout = HARTID; // Immutable
-		`CSR_CYCLELO:	dout = cpuclocktime[31:0];
-		`CSR_CYCLEHI:	dout = cpuclocktime[63:32];
-		`CSR_TIMELO:	dout = wallclocktime[31:0];
-		`CSR_TIMEHI:	dout = wallclocktime[63:32];
+		`CSR_CYCLELO,
+		`CSR_TIMELO:	dout = cpuclocktime[31:0];
+		`CSR_CYCLEHI,
+		`CSR_TIMEHI:	dout = cpuclocktime[63:32];
 		`CSR_RETILO:	dout = retired[31:0];
 		`CSR_RETIHI:	dout = retired[63:32];
 		// Unknown register reads return zero (TODO: Also cause an exception?)

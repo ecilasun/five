@@ -6,7 +6,6 @@ module axi4uart(
 	input wire aclk,
 	input wire aresetn,
 	axi_if.slave s_axi,
-	input wire uartbaseclock,
 	output wire uart_rxd_out,
 	input wire uart_txd_in,
 	output wire uartrcvempty );
@@ -28,7 +27,7 @@ bit [7:0] datatotransmit = 8'h00;
 wire uarttxbusy;
 
 async_transmitter uart_transmit(
-	.clk(uartbaseclock),
+	.clk(aclk),
 	.txd_start(transmitbyte),
 	.txd_data(datatotransmit),
 	.txd(uart_rxd_out),
@@ -42,17 +41,16 @@ uartoutfifo UARTOut(
 	.full(uartsendfull),
 	.din(din),
 	.wr_en( (|we) ),
-	.wr_clk(aclk),
+	.clk(aclk),
 	.empty(uartsendempty),
 	.valid(uartsendvalid),
 	.dout(uartsenddout),
 	.rd_en(uartsendre),
-	.rd_clk(uartbaseclock),
 	.rst(~aresetn) );
 
 bit [1:0] uartwritemode = 2'b00;
 
-always @(posedge uartbaseclock) begin
+always @(posedge aclk) begin
 	uartsendre <= 1'b0;
 	transmitbyte <= 1'b0;
 	unique case(uartwritemode)
@@ -86,7 +84,7 @@ wire uartbyteavailable;
 wire [7:0] uartbytein;
 
 async_receiver uart_receive(
-	.clk(uartbaseclock),
+	.clk(aclk),
 	.rxd(uart_txd_in),
 	.rxd_data_ready(uartbyteavailable),
 	.rxd_data(uartbytein),
@@ -102,17 +100,16 @@ uartinfifo UARTIn(
 	.full(uartrcvfull),
 	.din(uartrcvdin),
 	.wr_en(uartrcvwe),
-	.wr_clk(uartbaseclock),
+	.clk(aclk),
 	.empty(uartrcvempty),
 	.dout(uartrcvdout),
 	.rd_en(uartrcvre),
-	.rd_clk(aclk),
 	.valid(uartrcvvalid),
 	.rst(~aresetn) );
 
-always @(posedge uartbaseclock) begin
+always @(posedge aclk) begin
 	uartrcvwe <= 1'b0;
-	// note: any byte that won't fit into the fifo will be dropped
+	// NOTE: Any byte that won't fit into the fifo will be dropped
 	// make sure to consume them quickly on arrival!
 	if (uartbyteavailable & (~uartrcvfull)) begin
 		uartrcvwe <= 1'b1;
@@ -120,10 +117,10 @@ always @(posedge uartbaseclock) begin
 	end
 end
 
-//volatile uint32_t *IO_UARTRX     = (volatile uint32_t* ) 0x20000000;
-//volatile uint32_t *IO_UARTTX     = (volatile uint32_t* ) 0x20000004;
-//volatile uint32_t *IO_UARTStatus = (volatile uint32_t* ) 0x20000008;
-//volatile uint32_t *IO_UARTCtl    = (volatile uint32_t* ) 0x20000000;
+// IO_UARTRX     0x80000000
+// IO_UARTTX     0x80000004
+// IO_UARTStatus 0x80000008
+// IO_UARTCtl    0x8000000C
 
 // main state machine
 always @(posedge aclk) begin

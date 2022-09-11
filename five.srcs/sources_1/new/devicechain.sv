@@ -51,7 +51,6 @@ wire uartrcvempty;
 axi4uart uartctl(
 	.aclk(aclk),
 	.aresetn(aresetn),
-	.uartbaseclock(uartbaseclock),
 	.s_axi(uartif),
 	.uart_rxd_out(uart_rxd_out),
 	.uart_txd_in(uart_txd_in),

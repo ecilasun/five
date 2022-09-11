@@ -11,20 +11,15 @@ module rv32i #(
 	input wire aclk,
 	input wire aresetn,
 	input wire [1:0] interrupts, // External machine interrupts
-	input wire [63:0] wallclocktime, // Wall clock in wc domain
 	input wire [63:0] cpuclocktime, // CPU clock in cc domain
 	axi_if.master cached_axi_m,
 	axi_if.master uncached_axi_m );
 
 // Handle CDC for signals from non-aclk domains
-(* async_reg = "true" *) logic [63:0] wc1;
-(* async_reg = "true" *) logic [63:0] wc2;
 (* async_reg = "true" *) logic [63:0] cc1;
 (* async_reg = "true" *) logic [63:0] cc2;
 
 always @(posedge aclk) begin
-	wc1 <= wallclocktime;
-	wc2 <= wc1; // CSR value
 	cc1 <= cpuclocktime;
 	cc2 <= cc1; // CSR value
 end
@@ -97,7 +92,7 @@ wire branchout;
 wire [31:0] aluout;
 
 // Timer trigger
-wire trq = (wc2 >= tcmp) ? 1'b1 : 1'b0;
+wire trq = (cc2 >= tcmp) ? 1'b1 : 1'b0;
 // Any external wire event triggers our interrupt service if corresponding enable bit is high
 wire hwint = (|interrupts) && mie[11];	// MEIE - machine external interrupt enable
 // Timer interrupts
@@ -161,7 +156,6 @@ integerregisterfile integerregisterfileinst(
 
 csrregisterfile #(.HARTID(HARTID)) csrregisterfileinst (
 	.clock(aclk),
-	.wallclocktime(wc2),
 	.cpuclocktime(cc2),
 	.retired(retired),
 	.tcmp(tcmp),
