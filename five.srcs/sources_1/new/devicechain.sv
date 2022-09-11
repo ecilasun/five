@@ -23,9 +23,9 @@ logic validwaddr_leds = 1'b0, validraddr_leds = 1'b0;
 //  LED: 0x80000010 - 0x8000001F
 
 always_comb begin
-    if (axi_s.awaddr[31:20] == 12'h800) begin
-        validwaddr_uart	= (axi_s.awaddr[19:0]>=20'h00000) && (axi_s.awaddr[19:0]<20'h00010);
-        validwaddr_leds	= (axi_s.awaddr[19:0]>=20'h00010) && (axi_s.awaddr[19:0]<20'h00020);
+    if (axi_s.awaddr[31:16] == 16'h8000) begin
+        validwaddr_uart	= (axi_s.awaddr[15:0]>=16'h0000) && (axi_s.awaddr[15:0]<16'h0010);
+        validwaddr_leds	= (axi_s.awaddr[15:0]>=16'h0010) && (axi_s.awaddr[15:0]<16'h0020);
     end else begin
         validwaddr_uart	= 1'b0;
         validwaddr_leds	= 1'b0;
@@ -33,9 +33,9 @@ always_comb begin
 end
 
 always_comb begin
-    if (axi_s.araddr[31:20] == 12'h800) begin
-        validraddr_uart	= (axi_s.araddr[19:0]>=20'h00000) && (axi_s.araddr[19:0]<20'h00010);
-        validraddr_leds	= (axi_s.araddr[19:0]>=20'h00010) && (axi_s.araddr[19:0]<20'h00020);
+    if (axi_s.araddr[31:16] == 16'h8000) begin
+        validraddr_uart	= (axi_s.araddr[15:0]>=16'h0000) && (axi_s.araddr[15:0]<16'h0010);
+        validraddr_leds	= (axi_s.araddr[15:0]>=16'h0010) && (axi_s.araddr[15:0]<16'h0020);
     end else begin
         validraddr_uart	= 1'b0;
         validraddr_leds	= 1'b0;
