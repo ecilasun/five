@@ -5,6 +5,9 @@ module simhat(
 
 logic sys_clock = 1'b0;
 
+wire uart_rxd_out;
+wire uart_rxd_in = 1'b1;
+
 tophat tophatinst(
 	.sys_clock(sys_clock),
 	.uart_rxd_out(),

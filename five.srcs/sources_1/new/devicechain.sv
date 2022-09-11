@@ -47,31 +47,15 @@ end
 // ------------------------------------------------------------------------------------
 
 axi_if uartif();
-wire uart_interrupt;
-axi4uartlite uartctl(
-  .s_axi_aclk(aclk),
-  .s_axi_aresetn(aresetn),
-  .interrupt(uart_interrupt),
-  .s_axi_awaddr(uartif.awaddr[3:0]),
-  .s_axi_awvalid(uartif.awvalid),
-  .s_axi_awready(uartif.awready),
-  .s_axi_wdata(uartif.wdata[31:0]),
-  .s_axi_wstrb(uartif.wstrb[3:0]),
-  .s_axi_wvalid(uartif.wvalid),
-  .s_axi_wready(uartif.wready),
-  .s_axi_bresp(uartif.bresp),
-  .s_axi_bvalid(uartif.bvalid),
-  .s_axi_bready(uartif.bready),
-  .s_axi_araddr(uartif.araddr[3:0]),
-  .s_axi_arvalid(uartif.arvalid),
-  .s_axi_arready(uartif.arready),
-  .s_axi_rdata(uartif.rdata[31:0]),
-  .s_axi_rresp(uartif.rresp),
-  .s_axi_rvalid(uartif.rvalid),
-  .s_axi_rready(uartif.rready),
-  .rx(uart_txd_in),
-  .tx(uart_rxd_out)
-);
+wire uartrcvempty;
+axi4uart uartctl(
+	.aclk(aclk),
+	.aresetn(aresetn),
+	.uartbaseclock(uartbaseclock),
+	.s_axi(uartif),
+	.uart_rxd_out(uart_rxd_out),
+	.uart_txd_in(uart_txd_in),
+	.uartrcvempty(uartrcvempty) );
 
 axi_if ledif();
 axi4ledctl ledctl(
@@ -84,7 +68,7 @@ axi4ledctl ledctl(
 // IRQ
 // ------------------------------------------------------------------------------------
 
-assign interrupts = {1'b0, uart_interrupt};
+assign interrupts = {1'b0, ~uartrcvempty};
 
 // ------------------------------------------------------------------------------------
 // Write router
