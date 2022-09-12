@@ -20,43 +20,43 @@ module instructiondecoder(
 	output bit [4:0] rd,				// Destination register
 	output bit [4:0] csrindex,			// Index of selected CSR register
 	output bit [31:0] immed,			// Unpacked immediate integer value
-	output bit selectimmedasrval2		// Select rval2 or unpacked integer during EXEC
+	output bit selectimmedasrval2,		// Select rval2 or unpacked integer during EXEC
+	output bit dready					// Decoded value ready
 );
 
-logic [31:0] instrlatch;
-
-always_latch begin
+// Delay ready signal for one clock behind enable
+always @(posedge aclk) begin
 	if (~aresetn) begin
-		instrlatch <= 32'd0;
+		dready <= 1'b0;
 	end else begin
-		if (enable) instrlatch <= instruction;
+		dready <= enable;
 	end
 end
 
 wire [17:0] instrOneHot = {
-	instrlatch[6:0]==`OPCODE_OP ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_OP_IMM ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_LUI ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_STORE ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_LOAD ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_JAL ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_JALR ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_BRANCH ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_AUIPC ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FENCE ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_SYSTEM ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FLOAT_OP ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FLOAT_LDW ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FLOAT_STW ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FLOAT_MADD ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FLOAT_MSUB ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FLOAT_NMSUB ? 1'b1:1'b0,
-	instrlatch[6:0]==`OPCODE_FLOAT_NMADD ? 1'b1:1'b0 };
+	instruction[6:0]==`OPCODE_OP ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_OP_IMM ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_LUI ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_STORE ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_LOAD ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_JAL ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_JALR ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_BRANCH ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_AUIPC ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FENCE ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_SYSTEM ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FLOAT_OP ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FLOAT_LDW ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FLOAT_STW ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FLOAT_MADD ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FLOAT_MSUB ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FLOAT_NMSUB ? 1'b1:1'b0,
+	instruction[6:0]==`OPCODE_FLOAT_NMADD ? 1'b1:1'b0 };
 
 //11:10 -> R/W mode
 //9:8 -> lowest privilege level allowed
 always_comb begin
-	case ({instrlatch[31:25], instrlatch[24:20]})
+	case ({instruction[31:25], instruction[24:20]})
 		default: csrindex = `CSR_MCAUSE;	// Illegal instruction exception
 		
 		//12'hF15: csrindex = `CSR_UNUSED;	// mconfigptr, defaults to zero, no exception
@@ -113,19 +113,19 @@ wire isfpuopcode =
 wire recording = ~(instrOneHot[`O_H_BRANCH] | instrOneHot[`O_H_LOAD] | instrOneHot[`O_H_STORE] | isfpuopcode) | (instrOneHot[`O_H_SYSTEM] & (|func3));
 
 // Source/destination register indices
-wire [4:0] src1 = instrlatch[19:15];
-wire [4:0] src2 = instrlatch[24:20];
-wire [4:0] src3 = instrlatch[31:27];
-wire [4:0] dest = instrlatch[11:7];
+wire [4:0] src1 = instruction[19:15];
+wire [4:0] src2 = instruction[24:20];
+wire [4:0] src3 = instruction[31:27];
+wire [4:0] dest = instruction[11:7];
 
 // Sub-functions
-wire [2:0] f3 = instrlatch[14:12];
-wire [6:0] f7 = instrlatch[31:25];
-wire [11:0] f12 = instrlatch[31:20];
-wire mathopsel = instrlatch[30];
-wire muldiv = instrlatch[25];
+wire [2:0] f3 = instruction[14:12];
+wire [6:0] f7 = instruction[31:25];
+wire [11:0] f12 = instruction[31:20];
+wire mathopsel = instruction[30];
+wire muldiv = instruction[25];
 
-wire [19:0] high20 = {20{instrlatch[31]}};
+wire [19:0] high20 = {20{instruction[31]}};
 
 // Shift in decoded values
 always_comb begin
@@ -214,7 +214,7 @@ end
 always_comb begin
 	case (1'b1)
 		default: /*instrOneHot[`O_H_LUI], instrOneHot[`O_H_AUIPC]:*/ begin	
-			immed = {instrlatch[31:12], 12'd0};
+			immed = {instruction[31:12], 12'd0};
 		end
 
 		instrOneHot[`O_H_FLOAT_STW], instrOneHot[`O_H_STORE]: begin
@@ -226,11 +226,11 @@ always_comb begin
 		end
 
 		instrOneHot[`O_H_JAL]: begin
-			immed = {{12{instrlatch[31]}}, instrlatch[19:12], instrlatch[20], instrlatch[30:21], 1'b0};
+			immed = {{12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0};
 		end
 
 		instrOneHot[`O_H_BRANCH]: begin
-			immed = {high20, instrlatch[7], instrlatch[30:25], instrlatch[11:8], 1'b0};
+			immed = {high20, instruction[7], instruction[30:25], instruction[11:8], 1'b0};
 		end
 
 		instrOneHot[`O_H_SYSTEM]: begin

@@ -8,17 +8,18 @@
             <top_module name="axi_pkg" />
             <top_module name="glbl" />
             <top_module name="simhat" />
+            <top_module name="vcomponents" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="10.016667 us"></ZoomStartTime>
-      <ZoomEndTime time="111.316668 us"></ZoomEndTime>
-      <Cursor1Time time="26.900000 us"></Cursor1Time>
+      <ZoomStartTime time="1,891.867 ns"></ZoomStartTime>
+      <ZoomEndTime time="2,300.668 ns"></ZoomEndTime>
+      <Cursor1Time time="1,980.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="404"></NameColumnWidth>
-      <ValueColumnWidth column_width="106"></ValueColumnWidth>
+      <NameColumnWidth column_width="402"></NameColumnWidth>
+      <ValueColumnWidth column_width="90"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="4" />
    <wvobject fp_name="group13" type="group">
@@ -187,9 +188,145 @@
          </wvobject>
       </wvobject>
    </wvobject>
-   <wvobject fp_name="group428" type="group">
-      <obj_property name="label">UART</obj_property>
+   <wvobject fp_name="group260" type="group">
+      <obj_property name="label">decoder0</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/aresetn" type="logic">
+         <obj_property name="ElementShortName">aresetn</obj_property>
+         <obj_property name="ObjectShortName">aresetn</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/aclk" type="logic">
+         <obj_property name="ElementShortName">aclk</obj_property>
+         <obj_property name="ObjectShortName">aclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/enable" type="logic">
+         <obj_property name="ElementShortName">enable</obj_property>
+         <obj_property name="ObjectShortName">enable</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/dready" type="logic">
+         <obj_property name="ElementShortName">dready</obj_property>
+         <obj_property name="ObjectShortName">dready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/instruction" type="array">
+         <obj_property name="ElementShortName">instruction[31:0]</obj_property>
+         <obj_property name="ObjectShortName">instruction[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/instrlatch" type="array">
+         <obj_property name="ElementShortName">instrlatch[31:0]</obj_property>
+         <obj_property name="ObjectShortName">instrlatch[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/instrOneHotOut" type="array">
+         <obj_property name="ElementShortName">instrOneHotOut[17:0]</obj_property>
+         <obj_property name="ObjectShortName">instrOneHotOut[17:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/isrecordingform" type="logic">
+         <obj_property name="ElementShortName">isrecordingform</obj_property>
+         <obj_property name="ObjectShortName">isrecordingform</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/aluop" type="array">
+         <obj_property name="ElementShortName">aluop[3:0]</obj_property>
+         <obj_property name="ObjectShortName">aluop[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/bluop" type="array">
+         <obj_property name="ElementShortName">bluop[2:0]</obj_property>
+         <obj_property name="ObjectShortName">bluop[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/func3" type="array">
+         <obj_property name="ElementShortName">func3[2:0]</obj_property>
+         <obj_property name="ObjectShortName">func3[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/func7" type="array">
+         <obj_property name="ElementShortName">func7[6:0]</obj_property>
+         <obj_property name="ObjectShortName">func7[6:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/func12" type="array">
+         <obj_property name="ElementShortName">func12[11:0]</obj_property>
+         <obj_property name="ObjectShortName">func12[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/rs1" type="array">
+         <obj_property name="ElementShortName">rs1[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rs1[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/rs2" type="array">
+         <obj_property name="ElementShortName">rs2[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rs2[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/rs3" type="array">
+         <obj_property name="ElementShortName">rs3[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rs3[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/rd" type="array">
+         <obj_property name="ElementShortName">rd[4:0]</obj_property>
+         <obj_property name="ObjectShortName">rd[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/csrindex" type="array">
+         <obj_property name="ElementShortName">csrindex[4:0]</obj_property>
+         <obj_property name="ObjectShortName">csrindex[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/immed" type="array">
+         <obj_property name="ElementShortName">immed[31:0]</obj_property>
+         <obj_property name="ObjectShortName">immed[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/selectimmedasrval2" type="logic">
+         <obj_property name="ElementShortName">selectimmedasrval2</obj_property>
+         <obj_property name="ObjectShortName">selectimmedasrval2</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/instrOneHot" type="array">
+         <obj_property name="ElementShortName">instrOneHot[17:0]</obj_property>
+         <obj_property name="ObjectShortName">instrOneHot[17:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/selector" type="logic">
+         <obj_property name="ElementShortName">selector</obj_property>
+         <obj_property name="ObjectShortName">selector</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/isfpuopcode" type="logic">
+         <obj_property name="ElementShortName">isfpuopcode</obj_property>
+         <obj_property name="ObjectShortName">isfpuopcode</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/recording" type="logic">
+         <obj_property name="ElementShortName">recording</obj_property>
+         <obj_property name="ObjectShortName">recording</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/src1" type="array">
+         <obj_property name="ElementShortName">src1[4:0]</obj_property>
+         <obj_property name="ObjectShortName">src1[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/src2" type="array">
+         <obj_property name="ElementShortName">src2[4:0]</obj_property>
+         <obj_property name="ObjectShortName">src2[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/src3" type="array">
+         <obj_property name="ElementShortName">src3[4:0]</obj_property>
+         <obj_property name="ObjectShortName">src3[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/dest" type="array">
+         <obj_property name="ElementShortName">dest[4:0]</obj_property>
+         <obj_property name="ObjectShortName">dest[4:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/f3" type="array">
+         <obj_property name="ElementShortName">f3[2:0]</obj_property>
+         <obj_property name="ObjectShortName">f3[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/f7" type="array">
+         <obj_property name="ElementShortName">f7[6:0]</obj_property>
+         <obj_property name="ObjectShortName">f7[6:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/f12" type="array">
+         <obj_property name="ElementShortName">f12[11:0]</obj_property>
+         <obj_property name="ObjectShortName">f12[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/mathopsel" type="logic">
+         <obj_property name="ElementShortName">mathopsel</obj_property>
+         <obj_property name="ObjectShortName">mathopsel</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/muldiv" type="logic">
+         <obj_property name="ElementShortName">muldiv</obj_property>
+         <obj_property name="ObjectShortName">muldiv</obj_property>
+      </wvobject>
+      <wvobject fp_name="/simhat/tophatinst/rv32instanceOne/instructiondecoderinst/high20" type="array">
+         <obj_property name="ElementShortName">high20[19:0]</obj_property>
+         <obj_property name="ObjectShortName">high20[19:0]</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>

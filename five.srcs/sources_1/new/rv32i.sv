@@ -24,7 +24,7 @@ always @(posedge aclk) begin
 	cc2 <= cc1; // CSR value
 end
 
-typedef enum logic [3:0] {INIT, RETIRE, FETCH, EXECUTE, STOREWAIT, LOADWAIT, INTERRUPTSETUP, INTERRUPTVALUE, INTERRUPTCAUSE, WFI} cpustatetype;
+typedef enum logic [3:0] {INIT, RETIRE, FETCH, DECODE, EXECUTE, STOREWAIT, LOADWAIT, INTERRUPTSETUP, INTERRUPTVALUE, INTERRUPTCAUSE, WFI} cpustatetype;
 cpustatetype cpustate = INIT;
 
 wire [17:0] instrOneHotOut;
@@ -36,6 +36,7 @@ wire [11:0] func12;
 wire [4:0] rs1, rs2, rs3, rd, csrindex;
 wire [31:0] immed;
 wire immsel, isrecordingform;
+wire dready;
 
 addr_t addr = RESETVECTOR;		// Memory address
 logic ren = 1'b0;				// Read enable
@@ -103,11 +104,12 @@ always @(posedge aclk) begin
 	retired <= retired + (cpustate == RETIRE ? 64'd1 : 64'd0);
 end
 
+logic [31:0] instruction = 32'd0;
 instructiondecoder instructiondecoderinst(
 	.aresetn(aresetn),
 	.aclk(aclk),
-	.enable(rready & (cpustate == FETCH)),
-	.instruction(din),
+	.enable(cpustate == DECODE),
+	.instruction(instruction),
 	.instrOneHotOut(instrOneHotOut),
 	.isrecordingform(isrecordingform),
 	.aluop(aluop),
@@ -121,7 +123,8 @@ instructiondecoder instructiondecoderinst(
 	.rd(rd),
 	.csrindex(csrindex),
 	.immed(immed),
-	.selectimmedasrval2(immsel) );
+	.selectimmedasrval2(immsel),
+	.dready(dready) );
 
 systemcache cacheinst(
 	.aclk(aclk),
@@ -169,7 +172,7 @@ csrregisterfile #(.HARTID(HARTID)) csrregisterfileinst (
 	.din(csrdin) );
 
 branchlogic branchlogicunit (
-	.enable(rready & (cpustate == FETCH)),
+	.enable(cpustate == DECODE),
 	.aclk(aclk),
 	.branchout(branchout),
 	.val1(rval1),
@@ -177,7 +180,7 @@ branchlogic branchlogicunit (
 	.bluop(bluop) );
 
 arithmeticlogic artithmeticlogicunit (
-	.enable(rready & (cpustate == FETCH)),
+	.enable(cpustate == DECODE),
 	.aclk(aclk),
 	.aluout(aluout),
 	.val1(rval1),
@@ -298,9 +301,14 @@ always @(posedge aclk) begin
 			FETCH: begin
 				adjacentPC <= PC + 32'd4;
 				ifetch <= ~rready;
+				cpustate <= rready ? DECODE : FETCH;
+			end
+			
+			DECODE: begin
+				instruction <= din;
 				rwaddress <= rval1 + immed;
 				csrprevval <= csrdout;
-				cpustate <= rready ? EXECUTE : FETCH;
+				cpustate <= dready ? EXECUTE : DECODE;
 			end
 
 			EXECUTE: begin
