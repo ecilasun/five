@@ -14,22 +14,28 @@ logic [1:0] grant;
 logic reqcomplete = 0;
 
 // A request is considered only when an incoming read or write address is valid
-always_comb begin
-	req[0] = axi_s[0].arvalid || axi_s[0].awvalid;
-	req[1] = axi_s[1].arvalid || axi_s[1].awvalid;
+genvar reqgen;
+generate
+for (reqgen=0; reqgen<2; reqgen++) begin
+	always_comb begin
+		req[reqgen] = axi_s[reqgen].arvalid || axi_s[reqgen].awvalid;
+	end
 end
+endgenerate
 
 // A grant is complete once we get a notification for a read or write completion
 always_comb begin
 	reqcomplete = (axi_m.rvalid && axi_m.rlast) || axi_m.bvalid;
 end
 
+wire [1:0] grantselect = ((~req+1)&req);
+
 always_ff @(posedge aclk) begin
 	if (~aresetn) begin
 		grant <= 0;
 	end else begin
 		// Grant access to the lowest device index requesting (lowest bit)
-		grant <= (arbiterstate == ARBITRATE) ? ((~req+1)&req) : grant;
+		grant <= (arbiterstate == ARBITRATE) ? grantselect : grant;
 	end
 end
 
