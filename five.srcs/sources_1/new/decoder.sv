@@ -21,17 +21,10 @@ module instructiondecoder(
 	output bit [4:0] csrindex,			// Index of selected CSR register
 	output bit [31:0] immed,			// Unpacked immediate integer value
 	output bit selectimmedasrval2,		// Select rval2 or unpacked integer during EXEC
-	output bit dready					// Decoded value ready
+	output wire dready					// Decoded value ready
 );
 
-// Delay ready signal for one clock behind enable
-always @(posedge aclk) begin
-	if (~aresetn) begin
-		dready <= 1'b0;
-	end else begin
-		dready <= enable;
-	end
-end
+assign dready = enable;
 
 wire [17:0] instrOneHot = {
 	instruction[6:0]==`OPCODE_OP ? 1'b1:1'b0,

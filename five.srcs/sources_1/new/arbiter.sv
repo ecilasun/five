@@ -35,7 +35,10 @@ always_ff @(posedge aclk) begin
 		grant <= 0;
 	end else begin
 		// Grant access to the lowest device index requesting (lowest bit)
-		grant <= (arbiterstate == ARBITRATE) ? grantselect : grant;
+		case (arbiterstate)
+			ARBITRATE: grant <= grantselect;
+			default: grant <= grant;
+		endcase
 	end
 end
 

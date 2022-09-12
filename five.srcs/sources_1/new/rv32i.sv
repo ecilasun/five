@@ -24,7 +24,7 @@ always @(posedge aclk) begin
 	cc2 <= cc1; // CSR value
 end
 
-typedef enum logic [3:0] {INIT, RETIRE, FETCH, DECODE, EXECUTE, STOREWAIT, LOADWAIT, INTERRUPTSETUP, INTERRUPTVALUE, INTERRUPTCAUSE, WFI} cpustatetype;
+typedef enum logic [3:0] {INIT, RETIRE, FETCH, DECODE, ADDRESSCALC, EXECUTE, STOREWAIT, LOADWAIT, INTERRUPTSETUP, INTERRUPTVALUE, INTERRUPTCAUSE, WFI} cpustatetype;
 cpustatetype cpustate = INIT;
 
 wire [17:0] instrOneHotOut;
@@ -53,6 +53,7 @@ wire wready, rready;			// Cache r/w state
 
 logic [31:0] PC = RESETVECTOR;
 logic [31:0] nextPC = RESETVECTOR;
+logic [31:0] offsetPC = 32'd0;
 logic [31:0] rwaddress = 32'd0;
 logic [31:0] adjacentPC = 32'd0;
 logic [63:0] retired = 0;
@@ -299,16 +300,21 @@ always @(posedge aclk) begin
 			end
 
 			FETCH: begin
-				adjacentPC <= PC + 32'd4;
+				instruction <= din;
 				ifetch <= ~rready;
 				cpustate <= rready ? DECODE : FETCH;
 			end
 			
 			DECODE: begin
-				instruction <= din;
+				cpustate <= dready ? ADDRESSCALC : DECODE;
+			end
+
+			ADDRESSCALC: begin
 				rwaddress <= rval1 + immed;
+				adjacentPC <= PC + 32'd4;
+				offsetPC <= PC + immed;
 				csrprevval <= csrdout;
-				cpustate <= dready ? EXECUTE : DECODE;
+				cpustate <= EXECUTE;
 			end
 
 			EXECUTE: begin
@@ -320,21 +326,21 @@ always @(posedge aclk) begin
 
 				case (1'b1)
 					instrOneHotOut[`O_H_AUIPC]: begin
-						rdin <= PC + immed;
+						rdin <= offsetPC;
 					end
 					instrOneHotOut[`O_H_LUI]: begin
 						rdin <= immed;
 					end
 					instrOneHotOut[`O_H_JAL]: begin
 						rdin <= adjacentPC;
-						nextPC <= PC + immed;
+						nextPC <= offsetPC;
 					end
 					instrOneHotOut[`O_H_JALR]: begin
 						rdin <= adjacentPC;
 						nextPC <= rwaddress;
 					end
 					instrOneHotOut[`O_H_BRANCH]: begin
-						nextPC <= branchout == 1'b1 ? (PC + immed) : adjacentPC;
+						nextPC <= branchout == 1'b1 ? offsetPC : adjacentPC;
 					end
 					instrOneHotOut[`O_H_OP], instrOneHotOut[`O_H_OP_IMM]: begin
 						cpustate <= RETIRE;
