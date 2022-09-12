@@ -384,8 +384,8 @@ set_false_path -from [get_pins ClockAndResetGen/aresetn_reg/C]
 # set_false_path -to [get_pins ClockAndResetGen/calib_done]
 # CSR register mapped times are not that critical and are false paths
 #set_false_path -from [get_pins {wallclocktime_reg[*]/C}]
-#set_false_path -from [get_pins {cpuclocktime_reg[*]/C}]
+set_false_path -from [get_pins {cpuclocktime_reg[*]/C}]
 # MISC
-#set_false_path -to [get_ports led[*]]
+set_false_path -to [get_ports leds[*]]
 # set_false_path -to [get_ports uart_txd_in]
 # set_false_path -to [get_ports uart_rxd_out]
