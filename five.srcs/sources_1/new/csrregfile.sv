@@ -66,14 +66,14 @@ always_comb begin
 		// Reads from internal register file
 		`CSR_MTVAL,
 		`CSR_MCAUSE,
-		`CSR_MSTATUS:	dout = csrreg[csrindex];
+		`CSR_MSTATUS,
+		`CSR_MEPC,
+		`CSR_TIMECMPLO,
+		`CSR_TIMECMPHI,
+		`CSR_MIE,
+		`CSR_MIP,
+		`CSR_MTVEC:		dout = csrreg[csrindex];
 		// Reads routed to external wires
-		`CSR_MEPC:		dout = mepc;
-		`CSR_TIMECMPLO:	dout = tcmp[31:0];
-		`CSR_TIMECMPHI:	dout = tcmp[63:32];
-		`CSR_MIE:		dout = mie;
-		`CSR_MIP:		dout = mip;
-		`CSR_MTVEC:		dout = mtvec;
 		`CSR_MHARTID:	dout = HARTID; // Immutable
 		`CSR_CYCLELO,
 		`CSR_TIMELO:	dout = cpuclocktime[31:0];
